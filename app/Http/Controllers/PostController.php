@@ -43,8 +43,8 @@ class PostController extends Controller
         $post->load('user');
         
         return inertia('Posts/Show', [
-            'post' => PostResource::make($post),
-            'comments' => CommentResource::collection($post
+            'post' =>   fn() => PostResource::make($post),
+            'comments' => fn() => CommentResource::collection($post
                 ->comments()
                 ->with('user')
                 ->latest()
