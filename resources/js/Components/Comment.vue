@@ -1,7 +1,18 @@
 <script setup>
 import { relativeDate } from "@/utilities/date";
+import { router, usePage } from "@inertiajs/vue3";
+import { computed } from "vue";
 
-defineProps(["comment"]);
+const props = defineProps(["comment"]);
+
+const deleteComment = () =>
+  router.delete(route("comments.destroy", props.comment.id), {
+    preserveScroll: true,
+  });
+
+const canDoAction = computed(
+  () => props.comment.user.id === usePage().props.auth.user?.id,
+);
 </script>
 
 <template>
@@ -22,6 +33,12 @@ defineProps(["comment"]);
         <span class="text-gray-500 dark:text-gray-600">
           &nbsp;{{ relativeDate(comment.created_at) }} ago
         </span>
+
+        <div v-if="canDoAction" class="mt-2">
+          <form @submit.prevent="deleteComment">
+            <button class="rounded-lg border px-3 py-1 text-sm">Delete</button>
+          </form>
+        </div>
       </div>
     </div>
   </div>

@@ -29,15 +29,15 @@ class CommentController extends Controller
      */
     public function store(Request $request, Post $post)
     {
-        $data = $request->validate(['body' => 'required|string|max:2500']);
+        $data = $request->validate(["body" => "required|string|max:2500"]);
 
         Comment::create([
             ...$data,
-            'post_id' => $post->id,
-            'user_id' => $request->user()->id,
+            "post_id" => $post->id,
+            "user_id" => $request->user()->id,
         ]);
 
-        return to_route('posts.show', $post);
+        return to_route("posts.show", $post);
     }
 
     /**
@@ -67,8 +67,14 @@ class CommentController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Comment $comment)
+    public function destroy(Request $request, Comment $comment)
     {
-        //
+        if ($request->user()->id !== $comment->user_id) {
+            abort(403);
+        }
+
+        $comment->delete();
+
+        return to_route("posts.show", $comment->post_id);
     }
 }

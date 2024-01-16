@@ -6,7 +6,6 @@ import { computed } from "vue";
 import { relativeDate } from "@/utilities/date";
 import Pagination from "@/Components/Pagination.vue";
 import InputLabel from "@/Components/InputLabel.vue";
-import TextInput from "@/Components/TextInput.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import { useForm } from "@inertiajs/vue3";
 import TextArea from "@/Components/TextArea.vue";
