@@ -5,39 +5,45 @@ use App\Models\Post;
 use App\Models\User;
 
 use function Pest\Laravel\actingAs;
+use function Pest\Laravel\post;
 
-it('can store a comment', function() {
+it("requires authentication", function () {
+    post(
+        route("posts.comments.store", Post::factory()->create())
+    )->assertRedirect(route("login"));
+});
+
+it("can store a comment", function () {
     $user = User::factory()->create();
     $post = Post::factory()->create();
 
-    actingAs($user)->post(route('posts.comments.store', $post), [
-        'body' => 'This is a comment',
+    actingAs($user)->post(route("posts.comments.store", $post), [
+        "body" => "This is a comment",
     ]);
 
     $this->assertDatabaseHas(Comment::class, [
-        'body' => 'This is a comment',
-        'post_id' => $post->id,
-        'user_id' => $user->id,
+        "body" => "This is a comment",
+        "post_id" => $post->id,
+        "user_id" => $user->id,
     ]);
 });
 
-it('redirects to the post show page', function() {
+it("redirects to the post show page", function () {
     $post = Post::factory()->create();
 
     actingAs(User::factory()->create())
-        ->post(route('posts.comments.store', $post), [
-            'body' => 'This is a comment',
+        ->post(route("posts.comments.store", $post), [
+            "body" => "This is a comment",
         ])
-        ->assertRedirect(route('posts.show', $post));
+        ->assertRedirect(route("posts.show", $post));
 });
 
-it('requires a valid body', function($value) {
+it("requires a valid body", function ($value) {
     $post = Post::factory()->create();
 
     actingAs(User::factory()->create())
-        ->post(route('posts.comments.store', $post), [
-            'body' => $value,
+        ->post(route("posts.comments.store", $post), [
+            "body" => $value,
         ])
-        ->assertInvalid('body');
-})->with([null, 1, .5, true, str_repeat('a', 2501)]);
-
+        ->assertInvalid("body");
+})->with([null, 1, 0.5, true, str_repeat("a", 2501)]);
