@@ -35,3 +35,14 @@ it("prevets deleting a comment you did not create", function () {
         ->delete(route("comments.destroy", $comment))
         ->assertForbidden();
 });
+
+it("prevets deleting a comment posted over an hour ago", function () {
+    $this->freezeTime();
+    $comment = Comment::factory()->create();
+
+    $this->travel(1)->hour();
+
+    actingAs($comment->user)
+        ->delete(route("comments.destroy", $comment))
+        ->assertForbidden();
+});
