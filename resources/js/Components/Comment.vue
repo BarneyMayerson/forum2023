@@ -15,7 +15,7 @@ const emit = defineEmits(["delete"]);
         alt="photo"
       />
     </div>
-    <div>
+    <div class="flex-1">
       <p class="mt-1 break-all">{{ comment.body }}</p>
       <div class="mt-1 text-xs">
         <span class="text-gray-600 dark:text-gray-400">
@@ -25,9 +25,14 @@ const emit = defineEmits(["delete"]);
           &nbsp;{{ relativeDate(comment.created_at) }} ago
         </span>
 
-        <div v-if="comment.can?.delete" class="mt-2">
-          <form @submit.prevent="$emit('delete', comment.id)">
-            <button class="rounded-lg border px-3 py-1 text-sm">Delete</button>
+        <div class="mt-2 text-right empty:hidden">
+          <form
+            v-if="comment.can?.delete"
+            @submit.prevent="$emit('delete', comment.id)"
+          >
+            <button class="font-mono text-xs hover:font-bold text-red-500">
+              Delete
+            </button>
           </form>
         </div>
       </div>
