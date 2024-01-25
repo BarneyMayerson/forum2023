@@ -26,17 +26,6 @@ const addComment = () =>
     onSuccess: () => commentForm.reset(),
   });
 
-const deleteCommentO = (commentId) =>
-  router.delete(
-    route("comments.destroy", {
-      comment: commentId,
-      page: props.comments.meta.current_page,
-    }),
-    {
-      preserveScroll: true,
-    },
-  );
-
 const deleteComment = (commentId) => {
   console.log(props.comments.meta.current_page);
   router.delete(
