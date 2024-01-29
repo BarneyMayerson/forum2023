@@ -3,7 +3,7 @@ import { relativeDate } from "@/utilities/date";
 
 const props = defineProps(["comment"]);
 
-const emit = defineEmits(["delete"]);
+const emit = defineEmits(["edit", "delete"]);
 </script>
 
 <template>
@@ -25,7 +25,13 @@ const emit = defineEmits(["delete"]);
           &nbsp;{{ relativeDate(comment.created_at) }} ago
         </span>
 
-        <div class="mt-2 text-right empty:hidden">
+        <div class="mt-2 flex justify-end space-x-3 empty:hidden">
+          <form
+            v-if="comment.can?.update"
+            @submit.prevent="$emit('edit', comment.id)"
+          >
+            <button class="font-mono text-xs hover:font-bold">Edit</button>
+          </form>
           <form
             v-if="comment.can?.delete"
             @submit.prevent="$emit('delete', comment.id)"
