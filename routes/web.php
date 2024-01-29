@@ -44,6 +44,11 @@ Route::middleware([
         CommentController::class,
         "destroy",
     ])->name("comments.destroy");
+
+    Route::put("comments/{comment}", [
+        CommentController::class,
+        "update",
+    ])->name("comments.update");
 });
 
 Route::get("posts", [PostController::class, "index"])->name("posts.index");
