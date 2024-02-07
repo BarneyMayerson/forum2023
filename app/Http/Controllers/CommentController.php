@@ -26,7 +26,7 @@ class CommentController extends Controller
             "user_id" => $request->user()->id,
         ]);
 
-        return to_route("posts.show", $post);
+        return to_route("posts.show", $post)->banner("Commnet saved.");
     }
 
     /**
@@ -43,7 +43,7 @@ class CommentController extends Controller
         return to_route("posts.show", [
             "post" => $comment->post_id,
             "page" => $request->query("page"),
-        ]);
+        ])->banner("Comment updated.");
     }
 
     /**
@@ -56,6 +56,6 @@ class CommentController extends Controller
         return to_route("posts.show", [
             "post" => $comment->post_id,
             "page" => $request->query("page"),
-        ]);
+        ])->banner("Comme deleted.");
     }
 }

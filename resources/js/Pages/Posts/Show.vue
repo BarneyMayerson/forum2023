@@ -129,7 +129,7 @@ const deleteComment = (commentId) => {
               @edit="editComment"
             />
           </li>
-          <Pagination :meta="comments.meta" :only="['comments']" />
+          <Pagination :meta="comments.meta" :only="['comments', 'jetstream']" />
         </ul>
       </div>
     </Container>
