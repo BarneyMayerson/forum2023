@@ -11,7 +11,7 @@ const emit = defineEmits(["edit", "delete"]);
     <div class="mb-4 flex-shrink-0 sm:mb-0 sm:mr-4">
       <img
         :src="comment.user.profile_photo_url"
-        class="h-10 w-10 rounded-full"
+        class="h-10 w-10 rounded-full object-cover object-center"
         alt="photo"
       />
     </div>
