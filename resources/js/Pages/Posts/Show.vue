@@ -12,6 +12,7 @@ import TextArea from "@/Components/TextArea.vue";
 import InputError from "@/Components/InputError.vue";
 import { router } from "@inertiajs/vue3";
 import SecondaryButton from "@/Components/SecondaryButton.vue";
+import { useConfirm } from "@/Composables/useConfirm";
 
 const props = defineProps(["post", "comments"]);
 
@@ -46,7 +47,15 @@ const addComment = () =>
     onSuccess: () => commentForm.reset(),
   });
 
-const updateComment = () => {
+const { state, confirmation } = useConfirm();
+
+const updateComment = async () => {
+  if (!(await confirmation("Do you actually want to update this comment?"))) {
+    commentTextAreaRef.value?.focus();
+
+    return;
+  }
+
   commentForm.put(
     route("comments.update", {
       comment: commentIdBeingEdited.value,
@@ -59,7 +68,11 @@ const updateComment = () => {
   );
 };
 
-const deleteComment = (commentId) => {
+const deleteComment = async (commentId) => {
+  if (!(await confirmation("Are you sure you want to delete this comment?"))) {
+    return;
+  }
+
   router.delete(
     route("comments.destroy", {
       comment: commentId,
