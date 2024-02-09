@@ -37,21 +37,21 @@ it("redirects to the post show page", function () {
         ->assertRedirect(route("posts.show", 1));
 });
 
-it("requires a valid title", function ($badTitle) {
-    $user = User::factory()->create();
-
-    actingAs($user)
-        ->post(route("posts.store"), [
-            ...$this->validData,
-            "title" => $badTitle,
-        ])
-        ->assertInvalid("title");
-})->with([null, true, 1, 1.2, str_repeat("a", 121), str_repeat("a", 4)]);
-
-it("requires a valid body", function ($badBody) {
-    $user = User::factory()->create();
-
-    actingAs($user)
-        ->post(route("posts.store"), [...$this->validData, "body" => $badBody])
-        ->assertInvalid("body");
-})->with([null, true, 1, 1.2, str_repeat("a", 10_001), str_repeat("a", 99)]);
+it("requires a valid data", function (array $badData, array|string $errors) {
+    actingAs(User::factory()->create())
+        ->post(route("posts.store"), [...$this->validData, ...$badData])
+        ->assertInvalid($errors);
+})->with([
+    [["title" => null], "title"],
+    [["title" => true], "title"],
+    [["title" => 1], "title"],
+    [["title" => 1.5], "title"],
+    [["title" => str_repeat("a", 121)], "title"],
+    [["title" => str_repeat("a", 4)], "title"],
+    [["body" => null], "body"],
+    [["body" => true], "body"],
+    [["body" => 1], "body"],
+    [["body" => 1.5], "body"],
+    [["body" => str_repeat("a", 10001)], "body"],
+    [["body" => str_repeat("a", 99)], "body"],
+]);
