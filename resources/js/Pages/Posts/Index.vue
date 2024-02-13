@@ -15,10 +15,7 @@ const formattedDate = (post) => relativeDate(post.created_at);
     <Container>
       <ul class="divide-y dark:divide-gray-700">
         <li v-for="post in posts.data" :key="post.id">
-          <Link
-            :href="route('posts.show', post.id)"
-            class="block group px-2 py-3"
-          >
+          <Link :href="post.routes.show" class="block group px-2 py-3">
             <span
               class="font-semibold text-lg group-hover:text-blue-700 dark:group-hover:text-blue-200"
               >{{ post.title }}</span

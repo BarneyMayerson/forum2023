@@ -6,6 +6,8 @@ use App\Http\Resources\CommentResource;
 use App\Http\Resources\PostResource;
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Support\Str;
 
 class PostController extends Controller
 {
@@ -49,14 +51,21 @@ class PostController extends Controller
 
         $post = Post::create([...$data, "user_id" => $request->user()->id]);
 
-        return to_route("posts.show", $post);
+        return redirect($post->showRoute($request->query()));
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Post $post)
+    public function show(Request $request, Post $post)
     {
+        if (!Str::contains($post->showRoute(), $request->path())) {
+            return redirect(
+                $post->showRoute($request->query()),
+                Response::HTTP_PERMANENTLY_REDIRECT
+            );
+        }
+
         $post->load("user");
 
         return inertia("Posts/Show", [
