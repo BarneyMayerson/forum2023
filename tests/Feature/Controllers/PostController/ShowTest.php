@@ -24,8 +24,6 @@ it("passes a post to the view", function () {
 });
 
 it("passes comments to the view", function () {
-    $this->withoutExceptionHandling();
-
     $post = Post::factory()->create();
     $comments = Comment::factory(2)
         ->for($post)
@@ -35,5 +33,13 @@ it("passes comments to the view", function () {
     get($post->showRoute())->assertHasPaginatedResource(
         "comments",
         CommentResource::collection($comments->reverse())
+    );
+});
+
+it("will redirect if the slug is incorrect", function () {
+    $post = Post::factory()->create(["title" => "The title"]);
+
+    get(route("posts.show", [$post, "foo-bar", "page" => 2]))->assertRedirect(
+        $post->showRoute(["page" => 2])
     );
 });
