@@ -37,7 +37,7 @@ it("redirects to the post show page", function () {
         ->put(route("comments.update", $comment), [
             "body" => "New body",
         ])
-        ->assertRedirect(route("posts.show", $comment->post));
+        ->assertRedirect($comment->post->showRoute());
 });
 
 it("redirects to the correct page of comments", function () {
@@ -47,9 +47,7 @@ it("redirects to the correct page of comments", function () {
         ->put(route("comments.update", ["comment" => $comment, "page" => 2]), [
             "body" => "New body",
         ])
-        ->assertRedirect(
-            route("posts.show", ["post" => $comment->post, "page" => 2])
-        );
+        ->assertRedirect($comment->post->showRoute(["page" => 2]));
 });
 
 it("cannon update a comment from another user", function () {

@@ -34,7 +34,11 @@ it("redirects to the post show page", function () {
 
     actingAs($user)
         ->post(route("posts.store"), $this->validData)
-        ->assertRedirect(route("posts.show", 1));
+        ->assertRedirect(
+            Post::latest()
+                ->first("id")
+                ->showRoute()
+        );
 });
 
 it("requires a valid data", function (array $badData, array|string $errors) {
