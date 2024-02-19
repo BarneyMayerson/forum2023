@@ -35,8 +35,8 @@ it("redirects to the post show page", function () {
     actingAs($user)
         ->post(route("posts.store"), $this->validData)
         ->assertRedirect(
-            Post::latest()
-                ->first("id")
+            Post::latest("id")
+                ->first()
                 ->showRoute()
         );
 });
