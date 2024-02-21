@@ -1,6 +1,7 @@
 <script setup>
 import { EditorContent, useEditor } from "@tiptap/vue-3";
 import { StarterKit } from "@tiptap/starter-kit";
+import { Link } from "@tiptap/extension-link";
 import { watch } from "vue";
 import { Markdown } from "tiptap-markdown";
 import "remixicon/fonts/remixicon.css";
@@ -17,7 +18,10 @@ const editor = useEditor({
       heading: {
         levels: [2, 3, 4],
       },
+      code: false,
+      codeBlock: false,
     }),
+    Link,
     Markdown,
   ],
 
@@ -42,6 +46,20 @@ watch(
   },
   { immediate: true },
 );
+
+const promptUserForHref = () => {
+  if (editor.value?.isActive("link")) {
+    return editor.value?.chain().unsetLink().run();
+  }
+
+  const href = prompt("Where do you want to link to?");
+
+  if (!href) {
+    return editor.value?.chain().focus().run();
+  }
+
+  return editor.value?.chain().focus().setLink({ href }).run();
+};
 </script>
 
 <template>
@@ -138,6 +156,21 @@ watch(
           title="Numeric list"
         >
           <i class="ri-list-ordered"></i>
+        </button>
+      </li>
+      <li>
+        <button
+          @click="promptUserForHref"
+          type="button"
+          class="px-3 py-2"
+          :class="[
+            editor.isActive('link')
+              ? 'bg-indigo-500 text-white'
+              : 'hover:bg-gray-200',
+          ]"
+          title="Add link"
+        >
+          <i class="ri-link"></i>
         </button>
       </li>
       <li>
