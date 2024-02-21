@@ -19,16 +19,19 @@ class DatabaseSeeder extends Seeder
         $users = User::factory(10)->create();
 
         $posts = Post::factory(150)
+            ->withFixture()
             ->has(Comment::factory(12)->recycle($users))
-            ->recycle($users)->create();
+            ->recycle($users)
+            ->create();
 
         $barney = User::factory()
-            ->has(Post::factory(42))
+            ->has(Post::factory(42)->withFixture())
             ->has(Comment::factory(120)->recycle($posts))
             ->create([
-                'name' => 'Barney Mayerson',
-                'email' => 'mr.barney.mayerson@gmail.com',
-                'password' => '$2y$12$lJq6Xm9CknrA7tQGtTK/zeAzJi34YmyI3gjen6C5aLMTaZdgX6RrS',
+                "name" => "Barney Mayerson",
+                "email" => "mr.barney.mayerson@gmail.com",
+                "password" =>
+                    '$2y$12$lJq6Xm9CknrA7tQGtTK/zeAzJi34YmyI3gjen6C5aLMTaZdgX6RrS',
             ]);
     }
 }
