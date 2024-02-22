@@ -8,6 +8,7 @@ import DropdownLink from "@/Components/DropdownLink.vue";
 import NavLink from "@/Components/NavLink.vue";
 import ResponsiveNavLink from "@/Components/ResponsiveNavLink.vue";
 import ConfirmationModalWrapper from "@/Components/ConfirmationModalWrapper.vue";
+import ThemeDropdown from "@/Components/ThemeDropdown.vue";
 
 defineProps({
   title: String,
@@ -88,6 +89,10 @@ const menu = [
             </div>
 
             <div class="hidden sm:flex sm:items-center sm:ms-6">
+              <!-- Themes Dropdown-->
+              <div>
+                <ThemeDropdown />
+              </div>
               <!-- Settings Dropdown -->
               <div v-if="$page.props.auth.user" class="ms-3 relative">
                 <Dropdown align="right" width="48">
