@@ -92,9 +92,10 @@ const deleteComment = async (commentId) => {
       <span class="block mt-1 text-sm text-gray-600 dark:text-gray-400">
         {{ formattedDate }} ago by {{ post.user.name }}
       </span>
-      <article class="mt-8">
-        <pre class="whitespace-pre-wrap font-sans">{{ post.body }}</pre>
-      </article>
+      <article
+        class="mt-6 prose prose-sky dark:prose-invert max-w-none"
+        v-html="post.html"
+      />
       <div class="mt-10">
         <h2 class="text-xl font-bold">Comments</h2>
         <form
