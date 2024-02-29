@@ -41,6 +41,8 @@ const editor = useEditor({
     emit("update:modelValue", editor.value?.storage.markdown.getMarkdown()),
 });
 
+defineExpose({ focus: () => editor.value.commands.focus() });
+
 watch(
   () => props.modelValue,
   (value) => {
