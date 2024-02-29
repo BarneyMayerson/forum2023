@@ -4,11 +4,13 @@ import { StarterKit } from "@tiptap/starter-kit";
 import { Link } from "@tiptap/extension-link";
 import { watch } from "vue";
 import { Markdown } from "tiptap-markdown";
+import { Placeholder } from "@tiptap/extension-placeholder";
 import "remixicon/fonts/remixicon.css";
 
 const props = defineProps({
   modelValue: "",
   editorClass: "",
+  placeholder: null,
 });
 
 const emit = defineEmits(["update:modelValue"]);
@@ -24,6 +26,9 @@ const editor = useEditor({
     }),
     Link,
     Markdown,
+    Placeholder.configure({
+      placeholder: props.placeholder,
+    }),
   ],
 
   editorProps: {
@@ -229,3 +234,10 @@ const promptUserForHref = () => {
     <EditorContent :editor="editor" />
   </div>
 </template>
+
+<style scoped>
+:deep(.tiptap p.is-editor-empty:first-child::before) {
+  @apply text-gray-400 float-left h-0 pointer-events-none;
+  content: attr(data-placeholder);
+}
+</style>
