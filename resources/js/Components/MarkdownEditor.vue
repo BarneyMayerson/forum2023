@@ -8,6 +8,7 @@ import "remixicon/fonts/remixicon.css";
 
 const props = defineProps({
   modelValue: "",
+  editorClass: "",
 });
 
 const emit = defineEmits(["update:modelValue"]);
@@ -27,7 +28,7 @@ const editor = useEditor({
 
   editorProps: {
     attributes: {
-      class: "min-h-[512px] prose prose-sm max-w-none py-1.5 px-3",
+      class: `min-h-[512px] prose prose-sm max-w-none py-1.5 px-3 ${props.editorClass}`,
     },
   },
 
