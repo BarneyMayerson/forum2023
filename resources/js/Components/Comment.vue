@@ -16,7 +16,10 @@ const emit = defineEmits(["edit", "delete"]);
       />
     </div>
     <div class="flex-1">
-      <p class="mt-1 break-all">{{ comment.body }}</p>
+      <div
+        class="prose dark:prose-invert max-w-none"
+        v-html="comment.html"
+      ></div>
       <div class="mt-1 text-xs">
         <span class="text-gray-600 dark:text-gray-400">
           By {{ comment.user.name }}

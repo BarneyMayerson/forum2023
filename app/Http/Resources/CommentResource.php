@@ -25,6 +25,7 @@ class CommentResource extends JsonResource
                 fn() => PostResource::make($this->post)
             ),
             "body" => $this->body,
+            "html" => $this->html,
             "updated_at" => $this->updated_at,
             "created_at" => $this->created_at,
             "can" => [
