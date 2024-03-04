@@ -8,6 +8,8 @@ import TextInput from "@/Components/TextInput.vue";
 import TextArea from "@/Components/TextArea.vue";
 import InputError from "@/Components/InputError.vue";
 import MarkdownEditor from "@/Components/MarkdownEditor.vue";
+import axios from "axios";
+import { isInProduction } from "@/utilities/environment";
 
 const form = useForm({
   title: "",
@@ -15,6 +17,17 @@ const form = useForm({
 });
 
 const createPost = () => form.post(route("posts.store"));
+
+const autofill = async () => {
+  if (isInProduction()) {
+    return;
+  }
+
+  const response = await axios.get("/local/post-content");
+
+  form.title = response.data.title;
+  form.body = response.data.body;
+};
 </script>
 
 <template>
@@ -36,7 +49,20 @@ const createPost = () => form.post(route("posts.store"));
         <div class="">
           <InputLabel for="body" class="sr-only">Body</InputLabel>
 
-          <MarkdownEditor v-model="form.body" class="my-6" />
+          <MarkdownEditor v-model="form.body" class="my-6">
+            <template #toolbar="{ editor }">
+              <li v-if="!isInProduction()">
+                <button
+                  @click="autofill"
+                  type="button"
+                  class="px-3 py-2"
+                  title="Autofill"
+                >
+                  <i class="ri-article-line"></i>
+                </button>
+              </li>
+            </template>
+          </MarkdownEditor>
 
           <TextArea v-model="form.body" id="body" rows="20" />
           <InputError :message="form.errors.body" class="mt-1" />
