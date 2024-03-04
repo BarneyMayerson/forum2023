@@ -55,7 +55,7 @@ const autofill = async () => {
                 <button
                   @click="autofill"
                   type="button"
-                  class="px-3 py-2"
+                  class="px-3 py-2 hover:bg-gray-200 dark:hover:bg-gray-600"
                   title="Autofill"
                 >
                   <i class="ri-article-line"></i>
