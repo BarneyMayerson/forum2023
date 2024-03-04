@@ -112,7 +112,7 @@ const deleteComment = async (commentId) => {
               v-model="commentForm.body"
               ref="commentTextAreaRef"
               id="body"
-              editorClass="min-h-[160px]"
+              :heightPX="160"
               placeholder="Enter comment here..."
             />
             <InputError :message="commentForm.errors.body" class="mt-1" />

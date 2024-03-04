@@ -63,8 +63,6 @@ const autofill = async () => {
               </li>
             </template>
           </MarkdownEditor>
-
-          <TextArea v-model="form.body" id="body" rows="20" />
           <InputError :message="form.errors.body" class="mt-1" />
         </div>
         <div class="">

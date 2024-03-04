@@ -9,7 +9,10 @@ import "remixicon/fonts/remixicon.css";
 
 const props = defineProps({
   modelValue: "",
-  editorClass: "",
+  heightPX: {
+    type: Number,
+    default: 512,
+  },
   placeholder: null,
 });
 
@@ -33,7 +36,7 @@ const editor = useEditor({
 
   editorProps: {
     attributes: {
-      class: `min-h-[512px] prose prose-sm max-w-none py-1.5 px-3 ${props.editorClass}`,
+      class: `bg-white dark:bg-gray-900 ring-1 ring-inset ring-gray-300 dark:ring-gray-700 prose dark:prose-invert max-w-none rounded-b-md focus:outline-none focus:ring-2 focus:ring-indigo-600 dark:focus:ring-indigo-600 py-1.5 px-3 min-h-[${props.heightPX}px]`,
     },
   },
 
@@ -73,18 +76,18 @@ const promptUserForHref = () => {
 <template>
   <div
     v-if="editor"
-    class="bg-white rounded-md border-0 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+    class="bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white rounded-md shadow-sm border-0 ring-1 ring-inset ring-gray-300 dark:ring-gray-700"
   >
-    <menu class="flex divide-x border-b dark:text-gray-800">
+    <menu class="flex divide-x divide-gray-300 dark:divide-gray-700">
       <li>
         <button
           @click="() => editor.chain().focus().toggleBold().run()"
           type="button"
-          class="px-3 py-1.5 rounded-tl-md"
+          class="px-3 py-2 rounded-tl-md"
           :class="[
             editor.isActive('bold')
-              ? 'bg-indigo-500 text-white'
-              : 'hover:bg-gray-200',
+              ? 'bg-indigo-500'
+              : 'hover:bg-gray-200 dark:hover:bg-gray-600',
           ]"
           title="Bold"
         >
@@ -95,11 +98,11 @@ const promptUserForHref = () => {
         <button
           @click="() => editor.chain().focus().toggleItalic().run()"
           type="button"
-          class="px-3 py-1.5"
+          class="px-3 py-2"
           :class="[
             editor.isActive('italic')
-              ? 'bg-indigo-500 text-white'
-              : 'hover:bg-gray-200',
+              ? 'bg-indigo-500'
+              : 'hover:bg-gray-200 dark:hover:bg-gray-600',
           ]"
           title="Italic"
         >
@@ -110,11 +113,11 @@ const promptUserForHref = () => {
         <button
           @click="() => editor.chain().focus().toggleStrike().run()"
           type="button"
-          class="px-3 py-1.5"
+          class="px-3 py-2"
           :class="[
             editor.isActive('strike')
-              ? 'bg-indigo-500 text-white'
-              : 'hover:bg-gray-200',
+              ? 'bg-indigo-500'
+              : 'hover:bg-gray-200 dark:hover:bg-gray-600',
           ]"
           title="Strikethrough"
         >
@@ -128,8 +131,8 @@ const promptUserForHref = () => {
           class="px-3 py-2"
           :class="[
             editor.isActive('blockquote')
-              ? 'bg-indigo-500 text-white'
-              : 'hover:bg-gray-200',
+              ? 'bg-indigo-500'
+              : 'hover:bg-gray-200 dark:hover:bg-gray-600',
           ]"
           title="Blockquote"
         >
@@ -143,8 +146,8 @@ const promptUserForHref = () => {
           class="px-3 py-2"
           :class="[
             editor.isActive('bulletList')
-              ? 'bg-indigo-500 text-white'
-              : 'hover:bg-gray-200',
+              ? 'bg-indigo-500'
+              : 'hover:bg-gray-200 dark:hover:bg-gray-600',
           ]"
           title="Bullet list"
         >
@@ -158,8 +161,8 @@ const promptUserForHref = () => {
           class="px-3 py-2"
           :class="[
             editor.isActive('orderedList')
-              ? 'bg-indigo-500 text-white'
-              : 'hover:bg-gray-200',
+              ? 'bg-indigo-500'
+              : 'hover:bg-gray-200 dark:hover:bg-gray-600',
           ]"
           title="Numeric list"
         >
@@ -173,8 +176,8 @@ const promptUserForHref = () => {
           class="px-3 py-2"
           :class="[
             editor.isActive('link')
-              ? 'bg-indigo-500 text-white'
-              : 'hover:bg-gray-200',
+              ? 'bg-indigo-500'
+              : 'hover:bg-gray-200 dark:hover:bg-gray-600',
           ]"
           title="Add link"
         >
@@ -190,8 +193,8 @@ const promptUserForHref = () => {
           class="px-3 py-2"
           :class="[
             editor.isActive('heading', { level: 2 })
-              ? 'bg-indigo-500 text-white'
-              : 'hover:bg-gray-200',
+              ? 'bg-indigo-500'
+              : 'hover:bg-gray-200 dark:hover:bg-gray-600',
           ]"
           title="Heading 1"
         >
@@ -207,8 +210,8 @@ const promptUserForHref = () => {
           class="px-3 py-2"
           :class="[
             editor.isActive('heading', { level: 3 })
-              ? 'bg-indigo-500 text-white'
-              : 'hover:bg-gray-200',
+              ? 'bg-indigo-500'
+              : 'hover:bg-gray-200 dark:hover:bg-gray-600',
           ]"
           title="Heading 2"
         >
@@ -224,8 +227,8 @@ const promptUserForHref = () => {
           class="px-3 py-2"
           :class="[
             editor.isActive('heading', { level: 4 })
-              ? 'bg-indigo-500 text-white'
-              : 'hover:bg-gray-200',
+              ? 'bg-indigo-500'
+              : 'hover:bg-gray-200 dark:hover:bg-gray-600',
           ]"
           title="Heading 3"
         >
