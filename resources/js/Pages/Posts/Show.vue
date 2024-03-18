@@ -8,7 +8,6 @@ import Pagination from "@/Components/Pagination.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import { useForm } from "@inertiajs/vue3";
-import TextArea from "@/Components/TextArea.vue";
 import InputError from "@/Components/InputError.vue";
 import { router } from "@inertiajs/vue3";
 import SecondaryButton from "@/Components/SecondaryButton.vue";

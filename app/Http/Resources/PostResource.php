@@ -20,6 +20,10 @@ class PostResource extends JsonResource
                 "user",
                 fn() => UserResource::make($this->user)
             ),
+            "topic" => $this->whenLoaded(
+                "topic",
+                fn() => TopicResource::make($this->topic)
+            ),
             "title" => $this->title,
             "body" => $this->body,
             "html" => $this->html,

@@ -5,16 +5,17 @@ use App\Models\Post;
 
 use function Pest\Laravel\get;
 
-it('should return the correct component', function() {
-    get(route('posts.index'))
-        ->assertComponent('Posts/Index');
+it("should return the correct component", function () {
+    get(route("posts.index"))->assertComponent("Posts/Index");
 });
 
-it('passes posts to the view', function() {
+it("passes posts to the view", function () {
     $posts = Post::factory(3)->create();
 
-    $posts->load('user');
+    $posts->load(["user", "topic"]);
 
-    get(route('posts.index'))
-        ->assertHasPaginatedResource('posts', PostResource::collection($posts->reverse()));
+    get(route("posts.index"))->assertHasPaginatedResource(
+        "posts",
+        PostResource::collection($posts->reverse())
+    );
 });
