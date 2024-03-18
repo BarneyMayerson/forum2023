@@ -2,7 +2,7 @@
 import { EditorContent, useEditor } from "@tiptap/vue-3";
 import { StarterKit } from "@tiptap/starter-kit";
 import { Link } from "@tiptap/extension-link";
-import { computed, watch } from "vue";
+import { watch } from "vue";
 import { Markdown } from "tiptap-markdown";
 import { Placeholder } from "@tiptap/extension-placeholder";
 import "remixicon/fonts/remixicon.css";
