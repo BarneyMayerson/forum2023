@@ -49,7 +49,7 @@ const autofill = async () => {
         <div class="">
           <InputLabel for="body" class="sr-only">Body</InputLabel>
 
-          <MarkdownEditor v-model="form.body" class="my-6">
+          <MarkdownEditor v-model="form.body" tall class="my-6">
             <template #toolbar="{ editor }">
               <li v-if="!isInProduction()">
                 <button
