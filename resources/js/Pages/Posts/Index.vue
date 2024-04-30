@@ -2,10 +2,11 @@
 import AppLayout from "@/Layouts/AppLayout.vue";
 import Container from "@/Components/Container.vue";
 import Pagination from "@/Components/Pagination.vue";
+import PageHeading from "@/Components/PageHeading.vue";
 import { Link } from "@inertiajs/vue3";
 import { relativeDate } from "@/utilities/date";
 
-defineProps(["posts"]);
+defineProps(["posts", "selectedTopic"]);
 
 const formattedDate = (post) => relativeDate(post.created_at);
 </script>
@@ -13,6 +14,21 @@ const formattedDate = (post) => relativeDate(post.created_at);
 <template>
   <AppLayout title="Posts">
     <Container>
+      <div class="mb-4">
+        <Link
+          v-if="selectedTopic"
+          :href="route('posts.index')"
+          class="text-indigo-500 hover:text-indigo-600 dark:hover:text-indigo-400 block mb-2"
+        >
+          Back to all Posts
+        </Link>
+        <PageHeading
+          v-text="selectedTopic ? selectedTopic.name : 'All Posts'"
+        />
+        <p v-if="selectedTopic" class="italic text-sm">
+          {{ selectedTopic.description }}
+        </p>
+      </div>
       <ul class="divide-y dark:divide-gray-700">
         <li
           v-for="post in posts.data"

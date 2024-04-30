@@ -5,11 +5,11 @@ import Container from "@/Components/Container.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import TextInput from "@/Components/TextInput.vue";
-import TextArea from "@/Components/TextArea.vue";
 import InputError from "@/Components/InputError.vue";
 import MarkdownEditor from "@/Components/MarkdownEditor.vue";
 import axios from "axios";
 import { isInProduction } from "@/utilities/environment";
+import PageHeading from "@/Components/PageHeading.vue";
 
 const form = useForm({
   title: "",
@@ -33,7 +33,7 @@ const autofill = async () => {
 <template>
   <AppLayout title="Create a Post">
     <Container>
-      <h1 class="text-2xl font-bold">Create a Post</h1>
+      <PageHeading>Create a Post</PageHeading>
 
       <form @submit.prevent="createPost" class="mt-3 space-y-3">
         <div class="">
