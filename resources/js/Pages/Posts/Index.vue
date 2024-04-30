@@ -29,7 +29,7 @@ const formattedDate = (post) => relativeDate(post.created_at);
             </span>
           </Link>
           <Link
-            href="/"
+            :href="route('posts.index', { topic: post.topic.slug })"
             class="text-xs text-blue-500 border border-blue-500 hover:bg-blue-500 hover:text-white transition-colors rounded-xl py-0.5 px-2"
             >{{ post.topic.name }}</Link
           >
