@@ -15,7 +15,7 @@ it("can show a post", function () {
 
 it("passes a post to the view", function () {
     $post = Post::factory()->create();
-    $post->load("user");
+    $post->load("user", "topic");
 
     get($post->showRoute())->assertHasResource(
         "post",
@@ -25,9 +25,7 @@ it("passes a post to the view", function () {
 
 it("passes comments to the view", function () {
     $post = Post::factory()->create();
-    $comments = Comment::factory(2)
-        ->for($post)
-        ->create();
+    $comments = Comment::factory(2)->for($post)->create();
     $comments->load("user");
 
     get($post->showRoute())->assertHasPaginatedResource(
