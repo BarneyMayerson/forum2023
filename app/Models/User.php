@@ -10,7 +10,6 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
-use League\MimeTypeDetection\FinfoMimeTypeDetector;
 
 class User extends Authenticatable implements MustVerifyEmail
 {

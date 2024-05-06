@@ -49,7 +49,7 @@ const addComment = () =>
     onSuccess: () => commentForm.reset(),
   });
 
-const { state, confirmation } = useConfirm();
+const { confirmation } = useConfirm();
 
 const updateComment = async () => {
   if (!(await confirmation("Do you actually want to update this comment?"))) {
@@ -85,6 +85,8 @@ const deleteComment = async (commentId) => {
     },
   );
 };
+
+const showPagination = computed(() => props.comments.meta.last_page > 1);
 </script>
 
 <template>
@@ -136,7 +138,7 @@ const deleteComment = async (commentId) => {
             Cancel
           </SecondaryButton>
         </form>
-        <ul class="divide-y mt-4">
+        <ul class="divide-y dark:divide-gray-600 mt-4">
           <li
             v-for="comment in comments.data"
             :key="comment.id"
@@ -148,7 +150,11 @@ const deleteComment = async (commentId) => {
               @edit="editComment"
             />
           </li>
-          <Pagination :meta="comments.meta" :only="['comments', 'jetstream']" />
+          <Pagination
+            v-if="showPagination"
+            :meta="comments.meta"
+            :only="['comments', 'jetstream']"
+          />
         </ul>
       </div>
     </Container>

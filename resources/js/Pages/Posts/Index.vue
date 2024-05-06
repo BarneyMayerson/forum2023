@@ -6,10 +6,13 @@ import PageHeading from "@/Components/PageHeading.vue";
 import Pill from "@/Components/Pill.vue";
 import { Link } from "@inertiajs/vue3";
 import { relativeDate } from "@/utilities/date";
+import { computed } from "vue";
 
-defineProps(["posts", "topics", "selectedTopic"]);
+const props = defineProps(["posts", "topics", "selectedTopic"]);
 
 const formattedDate = (post) => relativeDate(post.created_at);
+
+const showPagination = computed(() => props.posts.meta.last_page > 1);
 </script>
 
 <template>
@@ -62,7 +65,7 @@ const formattedDate = (post) => relativeDate(post.created_at);
         </li>
       </ul>
 
-      <Pagination :meta="posts.meta" />
+      <Pagination v-if="showPagination" :meta="posts.meta" />
     </Container>
   </AppLayout>
 </template>
