@@ -18,6 +18,8 @@ import Pill from "@/Components/Pill.vue";
 
 const props = defineProps(["post", "comments"]);
 
+console.log(props.comments.data.length);
+
 const formattedDate = computed(() => relativeDate(props.post.created_at));
 
 const commentForm = useForm({
@@ -78,7 +80,10 @@ const deleteComment = async (commentId) => {
   router.delete(
     route("comments.destroy", {
       comment: commentId,
-      page: props.comments.meta.current_page,
+      page:
+        props.comments.data.length > 1
+          ? props.comments.meta.current_page
+          : Math.max(props.comments.meta.current_page - 1, 1),
     }),
     {
       preserveScroll: true,

@@ -54,6 +54,6 @@ class CommentController extends Controller
 
         return redirect(
             $comment->post->showRoute(["page" => $request->query("page")])
-        )->banner("Comme deleted.");
+        )->banner("Comment deleted.");
     }
 }
