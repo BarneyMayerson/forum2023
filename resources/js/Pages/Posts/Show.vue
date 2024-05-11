@@ -118,7 +118,6 @@ const showPagination = computed(() => props.comments.meta.last_page > 1);
               v-model="commentForm.body"
               ref="commentTextAreaRef"
               id="body"
-              :heightPX="160"
               placeholder="Enter comment here..."
             />
             <InputError :message="commentForm.errors.body" class="mt-1" />
@@ -153,7 +152,7 @@ const showPagination = computed(() => props.comments.meta.last_page > 1);
           <Pagination
             v-if="showPagination"
             :meta="comments.meta"
-            :only="['comments', 'jetstream']"
+            :only="['comments']"
           />
         </ul>
       </div>
