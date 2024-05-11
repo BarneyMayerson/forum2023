@@ -34,10 +34,10 @@ it("passes comments to the view", function () {
     );
 });
 
-it("will redirect if the slug is incorrect", function () {
+it("will redirect if the slug is incorrect", function (string $incorrectSlug) {
     $post = Post::factory()->create(["title" => "The title"]);
 
-    get(route("posts.show", [$post, "foo-bar", "page" => 2]))->assertRedirect(
-        $post->showRoute(["page" => 2])
-    );
-});
+    get(
+        route("posts.show", [$post, $incorrectSlug, "page" => 2])
+    )->assertRedirect($post->showRoute(["page" => 2]));
+})->with(["foo-bar", "the"]);
