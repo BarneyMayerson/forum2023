@@ -56,7 +56,7 @@ const showPagination = computed(() => props.posts.meta.last_page > 1);
               >{{ post.title }}</span
             >
             <span class="block mt-1 text-sm text-gray-600 dark:text-gray-400">
-              {{ formattedDate(post) }} ago by {{ post.user.name }}
+              {{ formattedDate(post) }} by {{ post.user.name }}
             </span>
           </Link>
           <Pill :href="route('posts.index', { topic: post.topic.slug })">

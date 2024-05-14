@@ -25,7 +25,7 @@ const emit = defineEmits(["edit", "delete"]);
           By {{ comment.user.name }}
         </span>
         <span class="text-gray-500 dark:text-gray-600">
-          &nbsp;{{ relativeDate(comment.created_at) }} ago
+          &nbsp;{{ relativeDate(comment.created_at) }}
         </span>
 
         <div class="mt-2 flex justify-end space-x-3 empty:hidden">

@@ -7,9 +7,8 @@ import { relativeDate } from "@/utilities/date";
 import Pagination from "@/Components/Pagination.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
-import { useForm } from "@inertiajs/vue3";
+import { router, useForm, Head } from "@inertiajs/vue3";
 import InputError from "@/Components/InputError.vue";
-import { router } from "@inertiajs/vue3";
 import SecondaryButton from "@/Components/SecondaryButton.vue";
 import { useConfirm } from "@/Composables/useConfirm";
 import MarkdownEditor from "@/Components/MarkdownEditor.vue";
@@ -96,13 +95,16 @@ const showPagination = computed(() => props.comments.meta.last_page > 1);
 
 <template>
   <AppLayout :title="post.title">
+    <Head>
+      <link rel="canonical" :href="post.routes.show" />
+    </Head>
     <Container>
       <Pill :href="route('posts.index', { topic: post.topic.slug })">
         {{ post.topic.name }}
       </Pill>
       <PageHeading class="mt-2">{{ post.title }}</PageHeading>
       <span class="block mt-1 text-sm text-gray-600 dark:text-gray-400">
-        {{ formattedDate }} ago by {{ post.user.name }}
+        {{ formattedDate }} by {{ post.user.name }}
       </span>
       <article
         class="mt-6 prose prose-sky dark:prose-invert max-w-none"
