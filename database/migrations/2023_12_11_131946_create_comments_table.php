@@ -24,6 +24,7 @@ return new class extends Migration {
                 ->cascadeOnDelete();
             $table->longText("body");
             $table->longText("html");
+            $table->unsignedBigInteger("likes_count")->default(0);
             $table->timestamps();
         });
     }

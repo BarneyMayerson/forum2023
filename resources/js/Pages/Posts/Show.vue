@@ -106,6 +106,11 @@ const showPagination = computed(() => props.comments.meta.last_page > 1);
       <span class="block mt-1 text-sm text-gray-600 dark:text-gray-400">
         {{ formattedDate }} by {{ post.user.name }}
       </span>
+      <div class="mt-4">
+        <span class="text-pink-500 font-bold">
+          {{ post.likes_count }} likes
+        </span>
+      </div>
       <article
         class="mt-6 prose prose-sky dark:prose-invert max-w-none"
         v-html="post.html"

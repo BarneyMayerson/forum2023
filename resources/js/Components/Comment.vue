@@ -24,8 +24,11 @@ const emit = defineEmits(["edit", "delete"]);
         <span class="text-gray-600 dark:text-gray-400">
           By {{ comment.user.name }}
         </span>
-        <span class="text-gray-500 dark:text-gray-600">
+        <span class="text-gray-500">
           &nbsp;{{ relativeDate(comment.created_at) }}
+        </span>
+        <span class="text-pink-500">
+          &nbsp;{{ comment.likes_count }} likes
         </span>
 
         <div class="mt-2 flex justify-end space-x-3 empty:hidden">
