@@ -19,9 +19,10 @@ class CommentFactory extends Factory
     public function definition(): array
     {
         return [
-            'user_id' => User::factory(),
-            'post_id' => Post::factory(),
-            'body' => fake()->realText(200),
+            "user_id" => User::factory(),
+            "post_id" => Post::factory(),
+            "body" => fake()->realText(200),
+            "likes_count" => 0,
         ];
     }
 }

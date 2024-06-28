@@ -29,6 +29,7 @@ class PostFactory extends Factory
             "body" => Collection::times(4, fn() => fake()->realText(600))->join(
                 PHP_EOL . PHP_EOL
             ),
+            "likes_count" => 0,
         ];
     }
 
