@@ -7,13 +7,17 @@ import { relativeDate } from "@/utilities/date";
 import Pagination from "@/Components/Pagination.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
-import { router, useForm, Head } from "@inertiajs/vue3";
+import { router, useForm, Head, Link } from "@inertiajs/vue3";
 import InputError from "@/Components/InputError.vue";
 import SecondaryButton from "@/Components/SecondaryButton.vue";
 import { useConfirm } from "@/Composables/useConfirm";
 import MarkdownEditor from "@/Components/MarkdownEditor.vue";
 import PageHeading from "@/Components/PageHeading.vue";
 import Pill from "@/Components/Pill.vue";
+import {
+  HandThumbUpIcon,
+  HandThumbDownIcon,
+} from "@heroicons/vue/20/solid/index";
 
 const props = defineProps(["post", "comments"]);
 
@@ -110,6 +114,25 @@ const showPagination = computed(() => props.comments.meta.last_page > 1);
         <span class="text-pink-500 font-bold">
           {{ post.likes_count }} likes
         </span>
+        <div v-if="$page.props.auth.user" class="mt-2">
+          <Link
+            v-if="post.can.like"
+            :href="route('likes.store', ['post', post.id])"
+            method="post"
+            class="inline-block bg-indigo-600 hover:bg-pink-500 transition-colors text-white py-1.5 px-3 rounded-full"
+          >
+            <HandThumbUpIcon class="size-4" />
+          </Link>
+
+          <Link
+            v-else
+            :href="route('likes.destroy', ['post', post.id])"
+            method="delete"
+            class="inline-block bg-indigo-600 hover:bg-pink-500 transition-colors text-white py-1.5 px-3 rounded-full"
+          >
+            <HandThumbDownIcon class="size-4" />
+          </Link>
+        </div>
       </div>
       <article
         class="mt-6 prose prose-sky dark:prose-invert max-w-none"
