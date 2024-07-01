@@ -10,6 +10,7 @@ import { computed } from "vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import TextInput from "@/Components/TextInput.vue";
 import SecondaryButton from "@/Components/SecondaryButton.vue";
+import DangerButton from "@/Components/DangerButton.vue";
 
 const props = defineProps(["posts", "topics", "selectedTopic", "query"]);
 
@@ -24,6 +25,10 @@ const searchForm = useForm({
 const page = usePage();
 
 const search = () => searchForm.get(page.url);
+const clearSearch = () => {
+  searchForm.query = "";
+  search();
+};
 </script>
 
 <template>
@@ -69,6 +74,9 @@ const search = () => searchForm.get(page.url);
             <div class="mt-1 flex space-x-2">
               <TextInput v-model="searchForm.query" id="query" class="w-full" />
               <SecondaryButton type="submit">Search</SecondaryButton>
+              <DangerButton v-if="searchForm.query" @click="clearSearch">
+                Clear
+              </DangerButton>
             </div>
           </div>
         </form>
