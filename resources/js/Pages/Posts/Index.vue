@@ -20,6 +20,7 @@ const showPagination = computed(() => props.posts.meta.last_page > 1);
 
 const searchForm = useForm({
   query: props.query,
+  page: 1,
 });
 
 const page = usePage();
