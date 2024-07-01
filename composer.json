@@ -15,7 +15,6 @@
     "laravel/jetstream": "^5.0",
     "laravel/scout": "^10.10",
     "laravel/tinker": "^2.8",
-    "teamtnt/laravel-scout-tntsearch-driver": "^14.0",
     "tightenco/ziggy": "^1.0"
   },
   "require-dev": {

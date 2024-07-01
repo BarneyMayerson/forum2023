@@ -171,7 +171,6 @@ return [
             App\Providers\FortifyServiceProvider::class,
             App\Providers\JetstreamServiceProvider::class,
             App\Providers\TestingServiceProvider::class,
-            TeamTNT\Scout\TNTSearchScoutServiceProvider::class,
             Laravel\Scout\ScoutServiceProvider::class,
         ])
         ->toArray(),
