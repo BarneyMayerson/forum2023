@@ -4,15 +4,24 @@ import Container from "@/Components/Container.vue";
 import Pagination from "@/Components/Pagination.vue";
 import PageHeading from "@/Components/PageHeading.vue";
 import Pill from "@/Components/Pill.vue";
-import { Link } from "@inertiajs/vue3";
+import { Link, useForm } from "@inertiajs/vue3";
 import { relativeDate } from "@/utilities/date";
 import { computed } from "vue";
+import InputLabel from "@/Components/InputLabel.vue";
+import TextInput from "@/Components/TextInput.vue";
+import SecondaryButton from "@/Components/SecondaryButton.vue";
 
-const props = defineProps(["posts", "topics", "selectedTopic"]);
+const props = defineProps(["posts", "topics", "selectedTopic", "query"]);
 
 const formattedDate = (post) => relativeDate(post.created_at);
 
 const showPagination = computed(() => props.posts.meta.last_page > 1);
+
+const searchForm = useForm({
+  query: props.query,
+});
+
+const search = () => searchForm.get(route("posts.index"));
 </script>
 
 <template>
@@ -43,6 +52,16 @@ const showPagination = computed(() => props.posts.meta.last_page > 1);
             </Pill>
           </li>
         </menu>
+
+        <form @submit.prevent="search" class="mt-4">
+          <div>
+            <InputLabel for="query">Search</InputLabel>
+            <div class="mt-1 flex space-x-2">
+              <TextInput v-model="searchForm.query" id="query" class="w-full" />
+              <SecondaryButton type="submit">Search</SecondaryButton>
+            </div>
+          </div>
+        </form>
       </div>
       <ul class="divide-y dark:divide-gray-700">
         <li
