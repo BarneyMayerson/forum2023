@@ -4,7 +4,7 @@ import Container from "@/Components/Container.vue";
 import Pagination from "@/Components/Pagination.vue";
 import PageHeading from "@/Components/PageHeading.vue";
 import Pill from "@/Components/Pill.vue";
-import { Link, useForm } from "@inertiajs/vue3";
+import { Link, useForm, usePage } from "@inertiajs/vue3";
 import { relativeDate } from "@/utilities/date";
 import { computed } from "vue";
 import InputLabel from "@/Components/InputLabel.vue";
@@ -21,7 +21,9 @@ const searchForm = useForm({
   query: props.query,
 });
 
-const search = () => searchForm.get(route("posts.index"));
+const page = usePage();
+
+const search = () => searchForm.get(page.url);
 </script>
 
 <template>
@@ -39,13 +41,21 @@ const search = () => searchForm.get(route("posts.index"));
           class="flex items-center space-x-1 mt-2 overflow-x-auto pb-2 pt-1"
         >
           <li>
-            <Pill :href="route('posts.index')" :filled="!selectedTopic">
+            <Pill
+              :href="route('posts.index', { query: searchForm.query })"
+              :filled="!selectedTopic"
+            >
               All Posts
             </Pill>
           </li>
           <li v-for="topic in topics" :key="topic.id">
             <Pill
-              :href="route('posts.index', { topic: topic.slug })"
+              :href="
+                route('posts.index', {
+                  topic: topic.slug,
+                  query: searchForm.query,
+                })
+              "
               :filled="topic.id === selectedTopic?.id"
             >
               {{ topic.name }}
