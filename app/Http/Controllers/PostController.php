@@ -7,10 +7,11 @@ use App\Http\Resources\PostResource;
 use App\Http\Resources\TopicResource;
 use App\Models\Post;
 use App\Models\Topic;
-use Illuminate\Contracts\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Str;
+use Laravel\Scout\Builder as ScoutBuilder;
 
 class PostController extends Controller
 {
@@ -24,23 +25,30 @@ class PostController extends Controller
      */
     public function index(Request $request, Topic $topic = null)
     {
-        $posts = Post::with(["user", "topic"])
-            ->when($topic, fn(Builder $query) => $query->whereBelongsTo($topic))
-            ->when(
-                $request->query("query"),
-                fn(Builder $query) => $query->whereAny(
-                    ["title", "body"],
-                    "like",
-                    "%" . $request->query("query") . "%"
+        if ($request->query("query")) {
+            $posts = Post::search($request->query("query"))
+                ->query(fn(Builder $query) => $query->with(["user", "topic"]))
+                ->when(
+                    $topic,
+                    fn(ScoutBuilder $query) => $query->where(
+                        "topic_id",
+                        $topic->id
+                    )
+                );
+        } else {
+            $posts = Post::with(["user", "topic"])
+                ->when(
+                    $topic,
+                    fn(Builder $query) => $query->whereBelongsTo($topic)
                 )
-            )
-            ->latest()
-            ->latest("id")
-            ->paginate()
-            ->withQueryString();
+                ->latest()
+                ->latest("id");
+        }
 
         return inertia("Posts/Index", [
-            "posts" => PostResource::collection($posts),
+            "posts" => PostResource::collection(
+                $posts->paginate()->withQueryString()
+            ),
             "topics" => fn() => TopicResource::collection(Topic::all()),
             "selectedTopic" => fn() => $topic
                 ? TopicResource::make($topic)
