@@ -25,6 +25,7 @@ class LikeFactory extends Factory
             ]),
             "likeable_type" => $this->likeableType(...),
             "likeable_id" => Post::factory(),
+            "is_like" => true,
         ];
     }
 

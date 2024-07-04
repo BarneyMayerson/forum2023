@@ -18,9 +18,18 @@ return new class extends Migration {
                 ->constrained()
                 ->cascadeOnDelete();
             $table->morphs("likeable");
+            $table
+                ->boolean("is_like")
+                ->default(true)
+                ->comment("whether LIKE or DISLIKE");
             $table->timestamps();
 
-            $table->unique(["user_id", "likeable_type", "likeable_id"]);
+            $table->unique([
+                "user_id",
+                "likeable_type",
+                "likeable_id",
+                "is_like",
+            ]);
         });
     }
 

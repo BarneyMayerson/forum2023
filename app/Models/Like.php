@@ -11,6 +11,13 @@ class Like extends Model
 {
     use HasFactory;
 
+    const LIKE = 1;
+    const DISLIKE = 0;
+
+    protected $casts = [
+        "is_like" => "boolean",
+    ];
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
@@ -19,5 +26,12 @@ class Like extends Model
     public function likeable(): MorphTo
     {
         return $this->morphTo();
+    }
+
+    public function toggle(): self
+    {
+        $this->is_like = !$this->is_like;
+
+        return $this;
     }
 }
