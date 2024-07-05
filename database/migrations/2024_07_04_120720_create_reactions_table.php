@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\Post;
 use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -12,21 +11,25 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create("comments", function (Blueprint $table) {
+        Schema::create("reactions", function (Blueprint $table) {
             $table->id();
             $table
                 ->foreignIdFor(User::class)
                 ->constrained()
-                ->restrictOnDelete();
-            $table
-                ->foreignIdFor(Post::class)
-                ->constrained()
                 ->cascadeOnDelete();
-            $table->longText("body");
-            $table->longText("html");
-            $table->unsignedBigInteger("likes_count")->default(0);
-            $table->unsignedBigInteger("dislikes_count")->default(0);
+
+            $table->morphs("reactionable");
+            $table
+                ->boolean("is_like")
+                ->default(true)
+                ->comment("1 = like, 0 = dislike");
             $table->timestamps();
+            $table->comment("For user reactions: likes and dislikes");
+
+            $table->unique(
+                ["user_id", "reactionable_type", "reactionable_id", "is_like"],
+                "user_unique_reaction_index"
+            );
         });
     }
 
@@ -35,6 +38,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists("comments");
+        Schema::dropIfExists("reactions");
     }
 };

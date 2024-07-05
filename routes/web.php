@@ -1,8 +1,8 @@
 <?php
 
 use App\Http\Controllers\CommentController;
-use App\Http\Controllers\LikeController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\ReactionController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -42,13 +42,15 @@ Route::middleware([
         ->shallow()
         ->only(["store", "update", "destroy"]);
 
-    Route::post("likes/{type}/{id}", [LikeController::class, "store"])->name(
-        "likes.store"
-    );
-    Route::delete("likes/{type}/{id}", [
-        LikeController::class,
+    // Reactions: lakes & dislikes
+    Route::post("reactions/{type}/{id}/{is_like}", [
+        ReactionController::class,
+        "store",
+    ])->name("reactions.store");
+    Route::delete("reactions/{type}/{id}/{is_like}", [
+        ReactionController::class,
         "destroy",
-    ])->name("likes.destroy");
+    ])->name("reactions.destroy");
 });
 
 Route::get("posts/{topic?}", [PostController::class, "index"])->name(

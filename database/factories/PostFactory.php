@@ -30,6 +30,7 @@ class PostFactory extends Factory
                 PHP_EOL . PHP_EOL
             ),
             "likes_count" => 0,
+            "dislikes_count" => 0,
         ];
     }
 

@@ -8,30 +8,34 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Like>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Reaction>
  */
-class LikeFactory extends Factory
+class ReactionFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
     public function definition(): array
     {
         return [
             "user_id" => User::factory([
                 "email" => "test+" . Str::uuid() . "@example.com",
             ]),
-            "likeable_type" => $this->likeableType(...),
-            "likeable_id" => Post::factory(),
+            "reactionable_type" => $this->reactionableType(...),
+            "reactionable_id" => Post::factory(),
             "is_like" => true,
         ];
     }
 
-    protected function likeableType(array $values)
+    public function dislike(): static
     {
-        $type = $values["likeable_id"];
+        return $this->state(function (array $attributes) {
+            return [
+                "is_like" => false,
+            ];
+        });
+    }
+
+    protected function reactionableType(array $values)
+    {
+        $type = $values["reactionable_id"];
         $modelName =
             $type instanceof Factory ? $type->modelName() : $type::class;
 

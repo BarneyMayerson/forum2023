@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
-class Like extends Model
+class Reaction extends Model
 {
     use HasFactory;
 
@@ -23,7 +23,7 @@ class Like extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function likeable(): MorphTo
+    public function reactionable(): MorphTo
     {
         return $this->morphTo();
     }
