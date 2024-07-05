@@ -38,7 +38,7 @@ class ReactionController extends Controller
     ) {
         $reactionable = $this->findReactionable($type, $id);
 
-        $this->authorize("delete", [Reaction::class, $reactionable]);
+        $this->authorize("delete", [Reaction::class, $reactionable, $isLike]);
 
         $reactionable->reactions()->whereBelongsTo($request->user())->delete();
 
@@ -46,7 +46,6 @@ class ReactionController extends Controller
             ? $reactionable->decrement("likes_count")
             : $reactionable->decrement("dislikes_count");
 
-        // dd("got bottom");
         return back();
     }
 

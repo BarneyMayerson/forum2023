@@ -18,18 +18,20 @@ class ReactionPolicy
             return false;
         }
 
-        return $reactionable->likes()->whereBelongsTo($user)->doesntExist();
+        return $reactionable->reactions()->whereBelongsTo($user)->doesntExist();
     }
 
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Model $reactionable): bool
+    public function delete(User $user, Model $reactionable, bool $isLike): bool
     {
         if (!in_array($reactionable::class, [Post::class, Comment::class])) {
             return false;
         }
 
-        return $reactionable->likes()->whereBelongsTo($user)->exists();
+        return $isLike
+            ? $reactionable->likes()->whereBelongsTo($user)->exists()
+            : $reactionable->dislikes()->whereBelongsTo($user)->exists();
     }
 }
