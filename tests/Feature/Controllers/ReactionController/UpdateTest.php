@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Reaction;
+use App\Models\User;
 
 use function Pest\Laravel\actingAs;
 use function Pest\Laravel\assertDatabaseHas;
@@ -49,7 +50,7 @@ it("allows disliking previously liked reactionable", function () {
     $reactionable = $reaction->reactionable;
 
     // forced increment likes count because we already have a like
-    $reactionable->update(["dislikes_count" => 1]);
+    $reactionable->update(["likes_count" => 1]);
 
     actingAs($user)
         ->fromRoute("dashboard")
@@ -70,4 +71,32 @@ it("allows disliking previously liked reactionable", function () {
     ]);
     expect($reactionable->refresh()->likes_count)->toBe(0);
     expect($reactionable->dislikes_count)->toBe(1);
+});
+
+it("prevents liking something disliked by another user", function () {
+    $dislike = Reaction::factory()->create(["is_like" => Reaction::DISLIKE]);
+
+    actingAs(User::factory()->create())
+        ->patch(
+            route("reactions.update", [
+                $dislike->reactionable->getMorphClass(),
+                $dislike->reactionable->id,
+                Reaction::LIKE,
+            ])
+        )
+        ->assertForbidden();
+});
+
+it("prevents disliking something liked by another user", function () {
+    $like = Reaction::factory()->create(["is_like" => Reaction::LIKE]);
+
+    actingAs(User::factory()->create())
+        ->patch(
+            route("reactions.update", [
+                $like->reactionable->getMorphClass(),
+                $like->reactionable->id,
+                Reaction::DISLIKE,
+            ])
+        )
+        ->assertForbidden();
 });

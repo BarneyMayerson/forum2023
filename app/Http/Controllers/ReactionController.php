@@ -16,6 +16,7 @@ class ReactionController extends Controller
     public function store(Request $request, string $type, int $id, bool $isLike)
     {
         $reactionable = $this->findReactionable($type, $id);
+
         $this->authorize("create", [Reaction::class, $reactionable]);
 
         $reactionable->reactions()->create([

@@ -71,3 +71,71 @@ it("allows disliking a reactionable", function (Model $reactionable) {
     fn() => Post::factory()->create(),
     fn() => Comment::factory()->create(),
 ]);
+
+it("prevents liking if you already liked it", function () {
+    $like = Reaction::factory()->create();
+
+    $reactionable = $like->reactionable;
+
+    actingAs($like->user)
+        ->post(
+            route("reactions.store", [
+                $reactionable->getMorphClass(),
+                $reactionable->id,
+                Reaction::LIKE,
+            ])
+        )
+        ->assertForbidden();
+});
+
+it("prevents disliking if you already disliked it", function () {
+    $dislike = Reaction::factory()->create(["is_like" => Reaction::DISLIKE]);
+
+    $reactionable = $dislike->reactionable;
+
+    actingAs($dislike->user)
+        ->post(
+            route("reactions.store", [
+                $reactionable->getMorphClass(),
+                $reactionable->id,
+                Reaction::DISLIKE,
+            ])
+        )
+        ->assertForbidden();
+});
+
+it("only allows make a reaction against supported models", function () {
+    $user = User::factory()->create();
+
+    actingAs($user)
+        ->post(
+            route("reactions.store", [
+                $user->getMorphClass(),
+                $user->id,
+                Reaction::LIKE,
+            ])
+        )
+        ->assertForbidden();
+
+    actingAs($user)
+        ->post(
+            route("reactions.store", [
+                $user->getMorphClass(),
+                $user->id,
+                Reaction::DISLIKE,
+            ])
+        )
+        ->assertForbidden();
+});
+
+it("throws a 404 if the type is unsupported", function () {
+    $user = User::factory()->create();
+
+    actingAs($user)
+        ->post(route("reactions.store", ["foo", 1, Reaction::LIKE]))
+        ->assertNotFound();
+
+    actingAs($user)
+        ->post(route("reactions.store", ["foo", 1, Reaction::DISLIKE]))
+        ->assertNotFound();
+});

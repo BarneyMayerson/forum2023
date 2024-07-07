@@ -66,26 +66,70 @@ it("allows undisliking a reactionable", function (Model $reactionable) {
     fn() => Comment::factory()->create(["dislikes_count" => 1]),
 ]);
 
-// it("prevents unliking something you have not liked", function () {
-//     $likeable = Post::factory()->create();
+it("prevents unliking something you have not liked", function () {
+    $likeable = Post::factory()->create();
 
-//     actingAs(User::factory()->create())
-//         ->delete(
-//             route("likes.destroy", [$likeable->getMorphClass(), $likeable->id])
-//         )
-//         ->assertForbidden();
-// });
+    actingAs(User::factory()->create())
+        ->delete(
+            route("reactions.destroy", [
+                $likeable->getMorphClass(),
+                $likeable->id,
+                Reaction::LIKE,
+            ])
+        )
+        ->assertForbidden();
+});
 
-// it("only allows unliking supported models", function () {
-//     $user = User::factory()->create();
+it("prevents undisliking something you have not disliked", function () {
+    $dislikeable = Post::factory()->create();
 
-//     actingAs($user)
-//         ->delete(route("likes.destroy", [$user->getMorphClass(), $user->id]))
-//         ->assertForbidden();
-// });
+    actingAs(User::factory()->create())
+        ->delete(
+            route("reactions.destroy", [
+                $dislikeable->getMorphClass(),
+                $dislikeable->id,
+                Reaction::DISLIKE,
+            ])
+        )
+        ->assertForbidden();
+});
 
-// it("throws a 404 if the type is unsupported", function () {
-//     actingAs(User::factory()->create())
-//         ->delete(route("likes.destroy", ["foo", 1]))
-//         ->assertNotFound();
-// });
+it("only allows unliking supported models", function () {
+    $user = User::factory()->create();
+
+    actingAs($user)
+        ->delete(
+            route("reactions.destroy", [
+                $user->getMorphClass(),
+                $user->id,
+                Reaction::LIKE,
+            ])
+        )
+        ->assertForbidden();
+});
+
+it("only allows undisliking supported models", function () {
+    $user = User::factory()->create();
+
+    actingAs($user)
+        ->delete(
+            route("reactions.destroy", [
+                $user->getMorphClass(),
+                $user->id,
+                Reaction::DISLIKE,
+            ])
+        )
+        ->assertForbidden();
+});
+
+it("throws a 404 if the type is unsupported", function () {
+    $user = User::factory()->create();
+
+    actingAs($user)
+        ->delete(route("reactions.destroy", ["foo", 1, Reaction::LIKE]))
+        ->assertNotFound();
+
+    actingAs($user)
+        ->delete(route("reactions.destroy", ["foo", 1, Reaction::DISLIKE]))
+        ->assertNotFound();
+});
