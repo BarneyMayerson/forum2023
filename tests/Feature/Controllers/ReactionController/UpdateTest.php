@@ -18,6 +18,9 @@ it("allows liking previously disliked reactionable", function () {
     $user = $reaction->user;
     $reactionable = $reaction->reactionable;
 
+    // forced increment dislikes count because we already have a dislike
+    $reactionable->update(["dislikes_count" => 1]);
+
     actingAs($user)
         ->fromRoute("dashboard")
         ->patch(
@@ -35,6 +38,8 @@ it("allows liking previously disliked reactionable", function () {
         "reactionable_type" => $reactionable->getMorphClass(),
         "is_like" => true,
     ]);
+    expect($reactionable->refresh()->likes_count)->toBe(1);
+    expect($reactionable->dislikes_count)->toBe(0);
 });
 
 it("allows disliking previously liked reactionable", function () {
@@ -42,6 +47,9 @@ it("allows disliking previously liked reactionable", function () {
 
     $user = $reaction->user;
     $reactionable = $reaction->reactionable;
+
+    // forced increment likes count because we already have a like
+    $reactionable->update(["dislikes_count" => 1]);
 
     actingAs($user)
         ->fromRoute("dashboard")
@@ -60,4 +68,6 @@ it("allows disliking previously liked reactionable", function () {
         "reactionable_type" => $reactionable->getMorphClass(),
         "is_like" => false,
     ]);
+    expect($reactionable->refresh()->likes_count)->toBe(0);
+    expect($reactionable->dislikes_count)->toBe(1);
 });
