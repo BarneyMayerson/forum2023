@@ -18,7 +18,7 @@ it("requires authentication", function () {
 
 it("allows unliking a reactionable", function (Model $reactionable) {
     $user = User::factory()->create();
-    $reaction = Reaction::factory()
+    Reaction::factory()
         ->for($user)
         ->for($reactionable, "reactionable")
         ->create(["is_like" => Reaction::LIKE]);
@@ -30,7 +30,6 @@ it("allows unliking a reactionable", function (Model $reactionable) {
                 $reactionable->getMorphClass(),
                 $reactionable->id,
                 Reaction::LIKE,
-                Reaction::POSITIVE,
             ])
         )
         ->assertRedirect(route("dashboard"));
@@ -44,7 +43,7 @@ it("allows unliking a reactionable", function (Model $reactionable) {
 
 it("allows undisliking a reactionable", function (Model $reactionable) {
     $user = User::factory()->create();
-    $reaction = Reaction::factory()
+    Reaction::factory()
         ->for($user)
         ->for($reactionable, "reactionable")
         ->create(["is_like" => Reaction::DISLIKE]);
@@ -56,7 +55,6 @@ it("allows undisliking a reactionable", function (Model $reactionable) {
                 $reactionable->getMorphClass(),
                 $reactionable->id,
                 Reaction::DISLIKE,
-                Reaction::POSITIVE,
             ])
         )
         ->assertRedirect(route("dashboard"));

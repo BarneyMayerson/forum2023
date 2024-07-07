@@ -47,6 +47,10 @@ Route::middleware([
         ReactionController::class,
         "store",
     ])->name("reactions.store");
+    Route::patch("reactions/{type}/{id}/{is_like}", [
+        ReactionController::class,
+        "update",
+    ])->name("reactions.update");
     Route::delete("reactions/{type}/{id}/{is_like}", [
         ReactionController::class,
         "destroy",

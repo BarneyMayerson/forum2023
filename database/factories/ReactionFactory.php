@@ -24,15 +24,6 @@ class ReactionFactory extends Factory
         ];
     }
 
-    public function dislike(): static
-    {
-        return $this->state(function (array $attributes) {
-            return [
-                "is_like" => false,
-            ];
-        });
-    }
-
     protected function reactionableType(array $values)
     {
         $type = $values["reactionable_id"];

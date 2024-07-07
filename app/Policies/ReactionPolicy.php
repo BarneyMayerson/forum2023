@@ -22,7 +22,7 @@ class ReactionPolicy
     }
 
     /**
-     * Determine whether the user can delete the model.
+     * Determine whether the user can delete a like or dislike.
      */
     public function delete(User $user, Model $reactionable, bool $isLike): bool
     {
@@ -33,5 +33,19 @@ class ReactionPolicy
         return $isLike
             ? $reactionable->likes()->whereBelongsTo($user)->exists()
             : $reactionable->dislikes()->whereBelongsTo($user)->exists();
+    }
+
+    /**
+     * Determine whether the user can convert a like into a dislike.
+     */
+    public function update(User $user, Model $reactionable, bool $isLike): bool
+    {
+        if (!in_array($reactionable::class, [Post::class, Comment::class])) {
+            return false;
+        }
+
+        return $isLike
+            ? $reactionable->dislikes()->whereBelongsTo($user)->exists()
+            : $reactionable->likes()->whereBelongsTo($user)->exists();
     }
 }

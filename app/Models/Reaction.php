@@ -13,8 +13,6 @@ class Reaction extends Model
 
     const LIKE = 1;
     const DISLIKE = 0;
-    const POSITIVE = true;
-    const NEGATIVE = false;
 
     protected $casts = [
         "is_like" => "boolean",
