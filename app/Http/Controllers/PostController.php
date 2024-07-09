@@ -98,7 +98,7 @@ class PostController extends Controller
         $post->load("user", "topic");
 
         return inertia("Posts/Show", [
-            "post" => fn() => PostResource::make($post)->withLikePermission(),
+            "post" => fn() => PostResource::make($post),
             "comments" => function () use ($post) {
                 $commentResource = CommentResource::collection(
                     $post
@@ -109,9 +109,9 @@ class PostController extends Controller
                         ->paginate(10)
                 );
 
-                $commentResource->collection->transform(
-                    fn($resource) => $resource->withLikePermission()
-                );
+                // $commentResource->collection->transform(
+                //     fn($resource) => $resource
+                // );
 
                 return $commentResource;
             },

@@ -41,22 +41,17 @@ class ReactionController extends Controller
 
         $this->authorize("update", [Reaction::class, $reactionable, $isLike]);
 
+        $reactionable
+            ->reactions()
+            ->whereBelongsTo($request->user())
+            ->first()
+            ->toggle()
+            ->save();
+
         if ($isLike) {
-            $reactionable
-                ->dislikes()
-                ->whereBelongsTo($request->user())
-                ->first()
-                ->toggle()
-                ->save();
             $reactionable->increment("likes_count");
             $reactionable->decrement("dislikes_count");
         } else {
-            $reactionable
-                ->likes()
-                ->whereBelongsTo($request->user())
-                ->first()
-                ->toggle()
-                ->save();
             $reactionable->decrement("likes_count");
             $reactionable->increment("dislikes_count");
         }

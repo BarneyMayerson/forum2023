@@ -37,27 +37,6 @@ const emit = defineEmits(["edit", "delete"]);
         </span>
 
         <div class="mt-2 flex justify-end space-x-3 empty:hidden">
-          <div v-if="$page.props.auth.user">
-            <Link
-              v-if="comment.can.like"
-              preserve-scroll
-              :href="route('likes.store', ['comment', comment.id])"
-              method="post"
-              class="inline-block hover:text-pink-500"
-            >
-              <HandThumbUpIcon class="size-4" />
-            </Link>
-
-            <Link
-              v-else
-              preserve-scroll
-              :href="route('likes.destroy', ['comment', comment.id])"
-              method="delete"
-              class="inline-block hover:text-pink-500"
-            >
-              <HandThumbDownIcon class="size-4" />
-            </Link>
-          </div>
           <form
             v-if="comment.can?.update"
             @submit.prevent="$emit('edit', comment.id)"

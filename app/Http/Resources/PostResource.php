@@ -2,22 +2,12 @@
 
 namespace App\Http\Resources;
 
-use App\Models\Like;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Number;
 
 class PostResource extends JsonResource
 {
-    private bool $withLikePermission = false;
-
-    public function withLikePermission(): self
-    {
-        $this->withLikePermission = true;
-
-        return $this;
-    }
-
     /**
      * Transform the resource into an array.
      *
@@ -33,18 +23,19 @@ class PostResource extends JsonResource
             "body" => $this->body,
             "html" => $this->html,
             "likes_count" => Number::abbreviate($this->likes_count),
+            "dislikes_count" => Number::abbreviate($this->dislikes_count),
             "updated_at" => $this->updated_at,
             "created_at" => $this->created_at,
             "routes" => [
                 "show" => $this->showRoute(),
             ],
-            "can" => [
-                "like" => $this->when(
-                    $this->withLikePermission,
-                    fn() => $request
-                        ->user()
-                        ?->can("create", [Like::class, $this->resource])
-                ),
+            "reaction" => [
+                "exists" => $this->reactions()
+                    ->where("user_id", $request->user()?->id)
+                    ->exists(),
+                "is_like" => $this->likes()
+                    ->where("user_id", $request->user()?->id)
+                    ->exists(),
             ],
         ];
     }
