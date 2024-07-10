@@ -1,14 +1,52 @@
 <script setup>
+import { router } from "@inertiajs/vue3";
 import { relativeDate } from "@/utilities/date";
-import { Link } from "@inertiajs/vue3";
-import {
-  HandThumbUpIcon,
-  HandThumbDownIcon,
-} from "@heroicons/vue/20/solid/index";
+import LikeDislike from "@/Components/LikeDislike.vue";
 
 const props = defineProps(["comment"]);
 
 const emit = defineEmits(["edit", "delete"]);
+
+const createReaction = (value) => {
+  router.post(
+    route("reactions.store", {
+      type: "comment",
+      id: props.comment.id,
+      is_like: value,
+    }),
+    {},
+    {
+      preserveScroll: true,
+    },
+  );
+};
+
+const deleteReaction = (value) => {
+  router.delete(
+    route("reactions.destroy", {
+      type: "comment",
+      id: props.comment.id,
+      is_like: value,
+    }),
+    {
+      preserveScroll: true,
+    },
+  );
+};
+
+const toggleReaction = (value) => {
+  router.patch(
+    route("reactions.update", {
+      type: "comment",
+      id: props.comment.id,
+      is_like: value,
+    }),
+    {},
+    {
+      preserveScroll: true,
+    },
+  );
+};
 </script>
 
 <template>
@@ -25,18 +63,28 @@ const emit = defineEmits(["edit", "delete"]);
         class="prose dark:prose-invert max-w-none"
         v-html="comment.html"
       ></div>
-      <div class="mt-1 text-xs">
-        <span class="text-gray-600 dark:text-gray-400">
-          By {{ comment.user.name }}
-        </span>
-        <span class="text-gray-500">
-          &nbsp;{{ relativeDate(comment.created_at) }}
-        </span>
-        <span class="text-pink-500">
-          &nbsp;{{ comment.likes_count }} likes
-        </span>
+      <div class="flex justify-between items-start">
+        <div>
+          <div class="mt-1 text-xs">
+            <span class="text-gray-600 dark:text-gray-400">
+              By {{ comment.user.name }}
+            </span>
+            <span class="text-gray-500">
+              &nbsp;{{ relativeDate(comment.created_at) }}
+            </span>
+          </div>
+          <LikeDislike
+            sizeMini
+            :likesCount="comment.likes_count"
+            :dislikesCount="comment.dislikes_count"
+            :reaction="comment.reaction"
+            @createReaction="createReaction"
+            @deleteReaction="deleteReaction"
+            @toggleReaction="toggleReaction"
+          />
+        </div>
 
-        <div class="mt-2 flex justify-end space-x-3 empty:hidden">
+        <div class="flex justify-end space-x-3 empty:hidden">
           <form
             v-if="comment.can?.update"
             @submit.prevent="$emit('edit', comment.id)"

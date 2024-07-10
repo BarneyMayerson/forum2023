@@ -76,16 +76,19 @@ const deleteComment = async (commentId) => {
   }
 
   router.delete(
-    route("comments.destroy", {
-      comment: commentId,
-      page:
-        props.comments.data.length > 1
-          ? props.comments.meta.current_page
-          : Math.max(props.comments.meta.current_page - 1, 1),
-    }),
-    {
-      preserveScroll: true,
-    },
+    route(
+      "comments.destroy",
+      {
+        comment: commentId,
+        page:
+          props.comments.data.length > 1
+            ? props.comments.meta.current_page
+            : Math.max(props.comments.meta.current_page - 1, 1),
+      },
+      {
+        preserveScroll: true,
+      },
+    ),
   );
 };
 
@@ -96,6 +99,7 @@ const createReaction = (value) => {
       id: props.post.id,
       is_like: value,
     }),
+    {},
     {
       preserveScroll: true,
     },
@@ -122,6 +126,7 @@ const toggleReaction = (value) => {
       id: props.post.id,
       is_like: value,
     }),
+    {},
     {
       preserveScroll: true,
     },

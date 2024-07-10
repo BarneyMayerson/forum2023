@@ -14,7 +14,13 @@ const props = defineProps({
     type: Object,
     required: true,
   },
+  sizeMini: {
+    type: Boolean,
+    default: false,
+  },
 });
+
+const iconSizeClass = props.sizeMini ? "size-3" : "size-5";
 
 const emit = defineEmits([
   "toggleReaction",
@@ -66,27 +72,21 @@ const createDislike = () => {
   isLiked.value = false;
   emit("createReaction", 0);
 };
-
-const deleteLike = () => {
-  hasReaction.value = false;
-  emit("deleteReaction", 1);
-};
-
-const deleteDislike = () => {
-  hasReaction.value = false;
-  emit("deleteReaction", 0);
-};
 </script>
 
 <template>
-  <div v-if="hasReaction" class="inline-flex space-x-8">
+  <div
+    v-if="hasReaction"
+    class="inline-flex"
+    :class="sizeMini ? 'space-x-6' : 'space-x-8'"
+  >
     <div class="flex items-center">
       <button
         :title="isLiked ? 'Unlike' : 'I like this'"
         @click="handleExistReaction(true)"
       >
         <svg
-          class="size-5 hover:text-blue-500"
+          :class="`${iconSizeClass} hover:text-blue-500`"
           :fill="isLiked ? 'currentColor' : 'none'"
           viewBox="0 0 24 24"
           stroke="currentColor"
@@ -99,16 +99,18 @@ const deleteDislike = () => {
           />
         </svg>
       </button>
-      <span class="ml-3">{{ likesCount }}</span>
+      <span class="ml-3" :class="sizeMini ? 'text-xs' : 'text-sm'">
+        {{ likesCount }}
+      </span>
     </div>
-    <span class="border-l-2" aria-hidden></span>
+    <span v-if="!sizeMini" class="border-l-2" aria-hidden></span>
     <div class="flex items-center">
       <button
         :title="isLiked ? 'I dislike this' : 'Undislike'"
         @click="handleExistReaction(false)"
       >
         <svg
-          class="size-5 hover:text-blue-500"
+          :class="`${iconSizeClass} hover:text-blue-500`"
           :fill="!isLiked ? 'currentColor' : 'none'"
           viewBox="0 0 24 24"
           stroke="currentColor"
@@ -121,15 +123,17 @@ const deleteDislike = () => {
           />
         </svg>
       </button>
-      <span class="ml-3">{{ dislikesCount }}</span>
+      <span class="ml-3" :class="sizeMini ? 'text-xs' : 'text-sm'">
+        {{ dislikesCount }}
+      </span>
     </div>
   </div>
 
-  <div v-else class="inline-flex space-x-8">
+  <div v-else class="inline-flex" :class="sizeMini ? 'space-x-6' : 'space-x-8'">
     <div class="flex items-center">
       <button title="I like this" @click="createLike">
         <svg
-          class="size-5 hover:text-blue-500"
+          :class="`${iconSizeClass} hover:text-blue-500`"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
@@ -142,13 +146,15 @@ const deleteDislike = () => {
           />
         </svg>
       </button>
-      <span class="ml-3">{{ likesCount }}</span>
+      <span class="ml-3" :class="sizeMini ? 'text-xs' : 'text-sm'">
+        {{ likesCount }}
+      </span>
     </div>
-    <span class="border-l-2" aria-hidden></span>
+    <span v-if="!sizeMini" class="border-l-2" aria-hidden></span>
     <div class="flex items-center">
       <button title="I dislike this" @click="createDislike">
         <svg
-          class="size-5 hover:text-blue-500"
+          :class="`${iconSizeClass} hover:text-blue-500`"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
@@ -161,7 +167,9 @@ const deleteDislike = () => {
           />
         </svg>
       </button>
-      <span class="ml-3">{{ dislikesCount }}</span>
+      <span class="ml-3" :class="sizeMini ? 'text-xs' : 'text-sm'">
+        {{ dislikesCount }}
+      </span>
     </div>
   </div>
 </template>
