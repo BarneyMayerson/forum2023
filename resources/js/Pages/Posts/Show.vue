@@ -99,7 +99,7 @@ const createReaction = (value) => {
       id: props.post.id,
       is_like: value,
     }),
-    {},
+    null,
     {
       preserveScroll: true,
     },
@@ -126,7 +126,7 @@ const toggleReaction = (value) => {
       id: props.post.id,
       is_like: value,
     }),
-    {},
+    null,
     {
       preserveScroll: true,
     },

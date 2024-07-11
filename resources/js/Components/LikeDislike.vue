@@ -3,11 +3,11 @@ import { ref } from "vue";
 
 const props = defineProps({
   likesCount: {
-    type: String,
+    type: [String, Number],
     required: true,
   },
   dislikesCount: {
-    type: String,
+    type: [String, Number],
     required: true,
   },
   reaction: {
@@ -32,32 +32,30 @@ const hasReaction = ref(props.reaction.exists);
 const isLiked = ref(props.reaction.is_like);
 
 const handleExistReaction = (isLikePushed) => {
-  if (isLiked.value === true && isLikePushed) {
-    hasReaction.value = false;
-    emit("deleteReaction", 1);
+  if (isLikePushed) {
+    if (isLiked.value === true) {
+      hasReaction.value = false;
+      emit("deleteReaction", 1);
 
-    return;
-  }
+      return;
+    } else {
+      isLiked.value = true;
+      emit("toggleReaction", 1);
 
-  if (isLiked.value === false && isLikePushed) {
-    isLiked.value = true;
+      return;
+    }
+  } else {
+    if (isLiked.value === true) {
+      isLiked.value = false;
+      emit("toggleReaction", 0);
 
-    emit("toggleReaction", 1);
-    return;
-  }
+      return;
+    } else {
+      hasReaction.value = false;
+      emit("deleteReaction", 0);
 
-  if (isLiked.value === true && !isLikePushed) {
-    isLiked.value = false;
-    emit("toggleReaction", 0);
-
-    return;
-  }
-
-  if (isLiked.value === false && !isLikePushed) {
-    hasReaction.value = false;
-    emit("deleteReaction", 0);
-
-    return;
+      return;
+    }
   }
 };
 

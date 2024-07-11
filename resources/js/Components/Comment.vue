@@ -14,7 +14,7 @@ const createReaction = (value) => {
       id: props.comment.id,
       is_like: value,
     }),
-    {},
+    null,
     {
       preserveScroll: true,
     },
@@ -41,7 +41,7 @@ const toggleReaction = (value) => {
       id: props.comment.id,
       is_like: value,
     }),
-    {},
+    null,
     {
       preserveScroll: true,
     },
