@@ -15,6 +15,7 @@ import MarkdownEditor from "@/Components/MarkdownEditor.vue";
 import PageHeading from "@/Components/PageHeading.vue";
 import Pill from "@/Components/Pill.vue";
 import LikeDislike from "@/Components/LikeDislike.vue";
+import { useReaction } from "@/Composables/useReaction";
 
 const props = defineProps(["post", "comments"]);
 
@@ -92,48 +93,16 @@ const deleteComment = async (commentId) => {
   );
 };
 
-const createReaction = (value) => {
-  router.post(
-    route("reactions.store", {
-      type: "post",
-      id: props.post.id,
-      is_like: value,
-    }),
-    null,
-    {
-      preserveScroll: true,
-    },
-  );
-};
-
-const deleteReaction = (value) => {
-  router.delete(
-    route("reactions.destroy", {
-      type: "post",
-      id: props.post.id,
-      is_like: value,
-    }),
-    {
-      preserveScroll: true,
-    },
-  );
-};
-
-const toggleReaction = (value) => {
-  router.patch(
-    route("reactions.update", {
-      type: "post",
-      id: props.post.id,
-      is_like: value,
-    }),
-    null,
-    {
-      preserveScroll: true,
-    },
-  );
-};
-
 const showPagination = computed(() => props.comments.meta.last_page > 1);
+
+const {
+  like,
+  unlike,
+  dislike,
+  undislike,
+  toggleLikeToDislike,
+  toggleDislikeToLike,
+} = useReaction();
 </script>
 
 <template>
@@ -154,9 +123,12 @@ const showPagination = computed(() => props.comments.meta.last_page > 1);
           :likesCount="post.likes_count"
           :dislikesCount="post.dislikes_count"
           :reaction="post.reaction"
-          @createReaction="createReaction"
-          @deleteReaction="deleteReaction"
-          @toggleReaction="toggleReaction"
+          @like="like('post', post.id)"
+          @unlike="unlike('post', post.id)"
+          @dislike="dislike('post', post.id)"
+          @undislike="undislike('post', post.id)"
+          @toggleLikeToDislike="toggleLikeToDislike('post', post.id)"
+          @toggleDislikeToLike="toggleDislikeToLike('post', post.id)"
         />
       </div>
       <article

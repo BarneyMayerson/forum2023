@@ -1,52 +1,20 @@
 <script setup>
-import { router } from "@inertiajs/vue3";
 import { relativeDate } from "@/utilities/date";
 import LikeDislike from "@/Components/LikeDislike.vue";
+import { useReaction } from "@/Composables/useReaction";
 
 const props = defineProps(["comment"]);
 
 const emit = defineEmits(["edit", "delete"]);
 
-const createReaction = (value) => {
-  router.post(
-    route("reactions.store", {
-      type: "comment",
-      id: props.comment.id,
-      is_like: value,
-    }),
-    null,
-    {
-      preserveScroll: true,
-    },
-  );
-};
-
-const deleteReaction = (value) => {
-  router.delete(
-    route("reactions.destroy", {
-      type: "comment",
-      id: props.comment.id,
-      is_like: value,
-    }),
-    {
-      preserveScroll: true,
-    },
-  );
-};
-
-const toggleReaction = (value) => {
-  router.patch(
-    route("reactions.update", {
-      type: "comment",
-      id: props.comment.id,
-      is_like: value,
-    }),
-    null,
-    {
-      preserveScroll: true,
-    },
-  );
-};
+const {
+  like,
+  unlike,
+  dislike,
+  undislike,
+  toggleLikeToDislike,
+  toggleDislikeToLike,
+} = useReaction();
 </script>
 
 <template>
@@ -78,9 +46,12 @@ const toggleReaction = (value) => {
             :likesCount="comment.likes_count"
             :dislikesCount="comment.dislikes_count"
             :reaction="comment.reaction"
-            @createReaction="createReaction"
-            @deleteReaction="deleteReaction"
-            @toggleReaction="toggleReaction"
+            @like="like('comment', comment.id)"
+            @unlike="unlike('comment', comment.id)"
+            @dislike="dislike('comment', comment.id)"
+            @undislike="undislike('comment', comment.id)"
+            @toggleLikeToDislike="toggleLikeToDislike('comment', comment.id)"
+            @toggleDislikeToLike="toggleDislikeToLike('comment', comment.id)"
           />
         </div>
 

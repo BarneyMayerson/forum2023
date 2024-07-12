@@ -23,9 +23,12 @@ const props = defineProps({
 const iconSizeClass = props.sizeMini ? "size-3" : "size-5";
 
 const emit = defineEmits([
-  "toggleReaction",
-  "createReaction",
-  "deleteReaction",
+  "like",
+  "unlike",
+  "dislike",
+  "undislike",
+  "toggleLikeToDislike",
+  "toggleDislikeToLike",
 ]);
 
 const hasReaction = ref(props.reaction.exists);
@@ -35,24 +38,24 @@ const handleExistReaction = (isLikePushed) => {
   if (isLikePushed) {
     if (isLiked.value === true) {
       hasReaction.value = false;
-      emit("deleteReaction", 1);
+      emit("unlike");
 
       return;
     } else {
       isLiked.value = true;
-      emit("toggleReaction", 1);
+      emit("toggleDislikeToLike");
 
       return;
     }
   } else {
     if (isLiked.value === true) {
       isLiked.value = false;
-      emit("toggleReaction", 0);
+      emit("toggleLikeToDislike");
 
       return;
     } else {
       hasReaction.value = false;
-      emit("deleteReaction", 0);
+      emit("undislike");
 
       return;
     }
@@ -62,13 +65,13 @@ const handleExistReaction = (isLikePushed) => {
 const createLike = () => {
   hasReaction.value = true;
   isLiked.value = true;
-  emit("createReaction", 1);
+  emit("like");
 };
 
 const createDislike = () => {
   hasReaction.value = true;
   isLiked.value = false;
-  emit("createReaction", 0);
+  emit("dislike");
 };
 </script>
 
